@@ -12,7 +12,7 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
-
+		public bool interact;
 		[Header("Movement Settings")]
 		public bool analogMovement;
 
@@ -20,8 +20,21 @@ namespace StarterAssets
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
 
+		public static StarterAssetsInputs instace;
+
+        private void Awake()
+        {
+            if (instace == null)
+			{
+				instace = this;
+			}
+			else
+			{
+				Destroy(this.gameObject);
+			}
+        }
 #if ENABLE_INPUT_SYSTEM
-		public void OnMove(InputValue value)
+        public void OnMove(InputValue value)
 		{
 			MoveInput(value.Get<Vector2>());
 		}
@@ -42,6 +55,11 @@ namespace StarterAssets
 		public void OnSprint(InputValue value)
 		{
 			SprintInput(value.isPressed);
+		}
+
+		public void OnInteract(InputValue value)
+		{
+			InteractInput(value.isPressed);
 		}
 #endif
 
@@ -64,6 +82,11 @@ namespace StarterAssets
 		public void SprintInput(bool newSprintState)
 		{
 			sprint = newSprintState;
+		}
+
+		public void InteractInput(bool newInteractState)
+		{
+			interact = newInteractState;
 		}
 
 		private void OnApplicationFocus(bool hasFocus)
